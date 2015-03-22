@@ -15,28 +15,28 @@ var fs = require('fs')
 /**
  * Simple Package Engine
  * 
- * Initialize a new PadEngine.
+ * Initialize a new EesEngine.
  *
  * @param {Object} repo
  */
-var PadEngine = module.exports = function() {
+var EesEngine = module.exports = function() {
   var self = this
 
-  if(false === (self instanceof PadEngine)) {
-    return new PadEngine()
+  if(false === (self instanceof EesEngine)) {
+    return new EesEngine()
   }
 
   return self
 }
 
 // IMPORTANT !
-PadEngine.files = [ ".zip", ".rar", ".tar", ".tar.gz" ];
+EesEngine.files = [ ".zip", ".rar", ".tar", ".tar.gz" ];
 
-PadEngine.type = 'epm-package-engine';
+EesEngine.type = 'epm-package-engine';
 
-PadEngine.version = require('./package.json').version;
+EesEngine.version = require('./package.json').version;
 
-PadEngine.prototype.readMetadata = function(filename, cb) {
+EesEngine.prototype.readMetadata = function(filename, cb) {
   var self = this
   try {
     var zip = new AdmZip(path.resolve(filename));
@@ -56,11 +56,11 @@ PadEngine.prototype.readMetadata = function(filename, cb) {
 }
 
 
-PadEngine.prototype.cutUid = function(uid){
+EesEngine.prototype.cutUid = function(uid){
   return uid.substring(0, 7) + ".." + uid.substring(uid.length-7)
 }
 
-PadEngine.prototype.getTags = function(metadata){
+EesEngine.prototype.getTags = function(metadata){
   if (   metadata === undefined 
       || metadata.content === undefined 
       || metadata.content.tags === undefined) return []
@@ -68,7 +68,7 @@ PadEngine.prototype.getTags = function(metadata){
   return wordsUtils.splitTags(metadata.content.tags)
 }
 
-PadEngine.prototype.isMatch = function(metadata, query){
+EesEngine.prototype.isMatch = function(metadata, query){
   var self = this;
 
   var meta = metadata
@@ -113,7 +113,7 @@ PadEngine.prototype.isMatch = function(metadata, query){
   return res
 }
 
-PadEngine.prototype.isMatchPredicate = function(predicate, metadata) {
+EesEngine.prototype.isMatchPredicate = function(predicate, metadata) {
   var self = this;
 
   try {
@@ -164,7 +164,7 @@ function compareScape(predicate, text){
   }
 }
 
-PadEngine.prototype.asset = function(repo, info, meta, asset, cb){
+EesEngine.prototype.asset = function(repo, info, meta, asset, cb){
   var self = this
 
   var key = info.uid + '-' + info.build
@@ -196,7 +196,7 @@ PadEngine.prototype.asset = function(repo, info, meta, asset, cb){
   return self
 }
 
-PadEngine.prototype.resolveAsset = function(metadata, asset){
+EesEngine.prototype.resolveAsset = function(metadata, asset){
   var self = this
 
   // image?
@@ -213,7 +213,7 @@ PadEngine.prototype.resolveAsset = function(metadata, asset){
   return undefined
 }
 
-PadEngine.prototype.content = function(repo, info, meta, cb){
+EesEngine.prototype.content = function(repo, info, meta, cb){
   var self = this
 
   var key = info.uid + '-' + info.build;
